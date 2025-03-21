@@ -1,0 +1,450 @@
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #252525;
+    --accent-primary: #6e59ff;
+    --accent-secondary: #9f59ff;
+    --text-primary: #f5f5f7;
+    --text-secondary: #a0a0a0;
+    --text-tertiary: #7e7e7e;
+    --success: #66d685;
+    --error: #ff7070;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.logo h1 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.logo h1 span {
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    min-height: 400px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    max-width: 80%;
+    animation: fadeIn 0.3s ease;
+}
+
+.message p {
+    margin: 0;
+}
+
+.message.system {
+    background-color: var(--bg-tertiary);
+    align-self: flex-start;
+}
+
+.message.user {
+    background-color: var(--accent-primary);
+    align-self: flex-end;
+}
+
+.chat-input {
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-input form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.chat-input input:focus {
+    box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
+.chat-input button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.chat-input button:hover {
+    background-color: var(--accent-secondary);
+}
+
+.chat-input button svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.roadmap-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-top: 2rem;
+    animation: fadeIn 0.5s ease;
+}
+
+.roadmap-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-family: 'Manrope', sans-serif;
+    color: var(--accent-primary);
+}
+
+.roadmap-content {
+    margin-bottom: 2rem;
+}
+
+.roadmap-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn:hover {
+    background-color: var(--accent-secondary);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(110, 89, 255, 0.1);
+}
+
+footer {
+    margin-top: 3rem;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+footer a:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow);
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    font-family: 'Manrope', sans-serif;
+    color: var(--accent-primary);
+}
+
+.modal-content p {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-content input {
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.modal-content input:focus {
+    border-color: var(--accent-primary);
+}
+
+.api-note {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+}
+
+.api-help {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--accent-primary);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 1rem;
+}
+
+.loading-overlay p {
+    color: var(--text-secondary);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Timeline styling for roadmap */
+.timeline {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.4rem;
+    top: 0;
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+    background-color: var(--accent-primary);
+}
+
+.timeline-item:nth-child(even)::before {
+    background-color: var(--accent-secondary);
+}
+
+.timeline-marker {
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content {
+    background-color: var(--bg-tertiary);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .chat-container {
+        height: 50vh;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+    
+    .roadmap-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-secondary);
+}
