@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupaWork - Achieve Your Goals</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="description" content="SupaWork helps you achieve your goals with personalized AI-generated action plans.">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>supawork<span>.xyz</span></h1>
+            </div>
+            <p class="tagline">From starting point to goal. We'll map your journey.</p>
+        </header>
+
+        <main>
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <div class="message system">
+                        <p>Welcome to SupaWork! Let's create a personalized plan to achieve your goal.</p>
+                    </div>
+                    <div class="message system">
+                        <p>First, tell me: <strong>What do you want to achieve?</strong></p>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <form id="chat-form">
+                        <input type="text" id="user-input" placeholder="Type your response here..." autocomplete="off">
+                        <button type="submit" id="send-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="roadmap-container" class="roadmap-container hidden">
+                <h2>Your Personalized Roadmap</h2>
+                <div id="roadmap-content"></div>
+                <div class="roadmap-actions">
+                    <button id="download-btn" class="btn">Download Plan</button>
+                    <button id="start-over-btn" class="btn btn-secondary">Start Over</button>
+                </div>
+            </div>
+        </main>
+
+        <div id="api-key-modal" class="modal">
+            <div class="modal-content">
+                <h2>Enter Your Hugging Face API Key</h2>
+                <p>SupaWork uses Hugging Face's API to generate personalized plans. Please enter your Hugging Face API key to continue.</p>
+                <form id="api-key-form">
+                    <input type="text" id="api-key-input" placeholder="hf_...">
+                    <button type="submit" class="btn">Continue</button>
+                </form>
+                <p class="api-note">Your API key is stored locally in your browser and is never sent to our servers.</p>
+                <p class="api-help">Don't have a key? <a href="https://huggingface.co/settings/tokens" target="_blank">Sign up for a free Hugging Face account</a> and create an API token.</p>
+            </div>
+        </div>
+
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <p>Creating your personalized plan...</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 SupaWork.xyz | <a href="#" id="change-api-key">Change API Key</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
