@@ -88,10 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.appendChild(paragraph);
         chatMessages.appendChild(messageDiv);
 
-        // Use requestAnimationFrame to ensure the DOM is updated
-        // before we scroll the container to the bottom.
+        // Scroll to bottom of the page (smoothly) so the user sees the newest messages
         requestAnimationFrame(() => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         });
     }
 
@@ -268,9 +267,7 @@ Ensure the advice is personalized based on the starting point and aligned with t
         const filename = `${userGoal.substring(0, 30).replace(/[^a-z0-9]/gi, '_').toLowerCase()}_roadmap.txt`;
         
         const element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(
-            `SUPAWORK.XYZ - YOUR GOAL ROADMAP\n\nGOAL: ${userGoal}\n\nCURRENT PROGRESS: ${userProgress}\n\n${roadmapText}`
-        ));
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`SUPAWORK.XYZ - YOUR GOAL ROADMAP\n\nGOAL: ${userGoal}\n\nCURRENT PROGRESS: ${userProgress}\n\n${roadmapText}`));
         element.setAttribute('download', filename);
         
         element.style.display = 'none';
