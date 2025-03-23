@@ -87,9 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         messageDiv.appendChild(paragraph);
         chatMessages.appendChild(messageDiv);
-        
-        // Auto scroll to bottom
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Use requestAnimationFrame to ensure the DOM is updated
+        // before we scroll the container to the bottom.
+        requestAnimationFrame(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
     }
 
     async function generateRoadmap(goal, progress) {
@@ -139,7 +142,7 @@ Ensure the advice is personalized based on the starting point and aligned with t
 <end_of_turn>
 
 <start_of_turn>model`;
-        
+
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -265,7 +268,9 @@ Ensure the advice is personalized based on the starting point and aligned with t
         const filename = `${userGoal.substring(0, 30).replace(/[^a-z0-9]/gi, '_').toLowerCase()}_roadmap.txt`;
         
         const element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`SUPAWORK.XYZ - YOUR GOAL ROADMAP\n\nGOAL: ${userGoal}\n\nCURRENT PROGRESS: ${userProgress}\n\n${roadmapText}`));
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(
+            `SUPAWORK.XYZ - YOUR GOAL ROADMAP\n\nGOAL: ${userGoal}\n\nCURRENT PROGRESS: ${userProgress}\n\n${roadmapText}`
+        ));
         element.setAttribute('download', filename);
         
         element.style.display = 'none';
