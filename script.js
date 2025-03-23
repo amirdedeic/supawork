@@ -79,6 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addMessage(text, sender) {
+        // Check if we should scroll to bottom (if user is already at bottom)
+        const chatContainer = chatMessages.parentElement;
+        const isAtBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 10;
+        
+        // Create and add message to chat
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', sender);
         
@@ -88,10 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.appendChild(paragraph);
         chatMessages.appendChild(messageDiv);
 
-        // Scroll to bottom of the page (smoothly) so the user sees the newest messages
-        requestAnimationFrame(() => {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        });
+        // Scroll to bottom only if user was already at the bottom
+        if (isAtBottom) {
+            // Wait for the DOM to update with the new message
+            requestAnimationFrame(() => {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+        }
     }
 
     async function generateRoadmap(goal, progress) {
