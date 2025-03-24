@@ -97,7 +97,7 @@ main {
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
-    height: 500px; /* Fixed height instead of min-height */
+    min-height: 400px;
     margin-bottom: 2rem;
 }
 
@@ -107,9 +107,8 @@ main {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    overflow-y: auto; /* Make this scrollable */
+    min-height: 300px;
 }
-
 
 .message {
     padding: 1rem;

@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addMessage(text, sender) {
-        // Create message elements
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', sender);
         
@@ -87,21 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
         paragraph.textContent = text;
         
         messageDiv.appendChild(paragraph);
-        
-        // Get current scroll position and height before adding the new message
-        const chatMessages = document.getElementById('chat-messages');
-        const isAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop <= chatMessages.clientHeight + 50;
-        
-        // Add the new message
         chatMessages.appendChild(messageDiv);
-        
-        // Scroll to the bottom if already at bottom or if it's a new message from the user
-        if (isAtBottom || sender === 'user') {
-            // Use setTimeout to ensure DOM has updated
-            setTimeout(() => {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 0);
-        }
+
+        // Scroll to bottom of the page (smoothly) so the user sees the newest messages
+        requestAnimationFrame(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
     }
 
     async function generateRoadmap(goal, progress) {
