@@ -12,12 +12,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadBtn = document.getElementById('download-btn');
     const startOverBtn = document.getElementById('start-over-btn');
     const loadingOverlay = document.getElementById('loading-overlay');
+    const tagline = document.querySelector('.tagline');
+    const header = document.querySelector('header');
 
     // State Variables
     let conversationState = 'goal'; // 'goal', 'progress', 'complete'
     let userGoal = '';
     let userProgress = '';
     let apiKey = localStorage.getItem('supawork_hf_api_key');
+    let lastScrollTop = 0;
+    
+    // Initialize tagline visibility
+    tagline.style.opacity = '1';
+    tagline.style.transition = 'opacity 0.3s ease';
+    
+    // Scroll event listener for tagline visibility
+    window.addEventListener('scroll', () => {
+        // Get current scroll position
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Only hide tagline after scrolling down a bit (e.g., 50px)
+        if (scrollTop > 50) {
+            tagline.style.opacity = '0';
+            tagline.style.visibility = 'hidden';
+            header.classList.add('compact-header');
+        } else {
+            tagline.style.opacity = '1';
+            tagline.style.visibility = 'visible';
+            header.classList.remove('compact-header');
+        }
+        
+        // Save current scroll position
+        lastScrollTop = scrollTop;
+    });
     
     // Check if API key exists
     if (!apiKey) {

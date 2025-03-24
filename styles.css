@@ -1,14 +1,4 @@
-/* Shadow effect for the sticky header to make it stand out */
-header::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -10px;
-    height: 10px;
-    background: linear-gradient(to bottom, rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0));
-    pointer-events: none;
-}:root {
+:root {
     --bg-primary: #121212;
     --bg-secondary: #1e1e1e;
     --bg-tertiary: #252525;
@@ -56,6 +46,19 @@ header {
     padding-top: 1rem;
     background-color: var(--bg-primary);
     z-index: 100;
+    transition: padding 0.3s ease;
+}
+
+/* Shadow effect for the sticky header to make it stand out */
+header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    height: 10px;
+    background: linear-gradient(to bottom, rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0));
+    pointer-events: none;
 }
 
 .logo h1 {
@@ -78,6 +81,13 @@ header {
     font-size: 1.2rem;
     color: var(--text-secondary);
     font-weight: 300;
+    height: 1.5rem; /* Approximate height of the tagline */
+    overflow: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.compact-header {
+    padding-bottom: 0.5rem;
 }
 
 main {
