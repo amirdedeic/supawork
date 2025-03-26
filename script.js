@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.getElementById('chat-messages');
     const roadmapContainer = document.getElementById('roadmap-container');
     const roadmapContent = document.getElementById('roadmap-content');
-    const apiKeyModal = document.getElementById('api-key-modal');
-    const apiKeyForm = document.getElementById('api-key-form');
-    const apiKeyInput = document.getElementById('api-key-input');
     const changeApiKeyBtn = document.getElementById('change-api-key');
     const downloadBtn = document.getElementById('download-btn');
     const startOverBtn = document.getElementById('start-over-btn');
@@ -19,8 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let conversationState = 'goal'; // 'goal', 'progress', 'complete'
     let userGoal = '';
     let userProgress = '';
-    let apiKey = localStorage.getItem('supawork_hf_api_key');
     let lastScrollTop = 0;
+    
+    // Lambda API endpoint - UPDATE THIS WITH YOUR ACTUAL ENDPOINT
+    const LAMBDA_ENDPOINT = 'https://your-api-gateway-url.execute-api.us-east-1.amazonaws.com/prod/generate-roadmap';
     
     // Initialize tagline visibility
     tagline.style.opacity = '1';
@@ -45,16 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Save current scroll position
         lastScrollTop = scrollTop;
     });
-    
-    // Check if API key exists
-    if (!apiKey) {
-        showApiKeyModal();
-    }
 
     // Event Listeners
     chatForm.addEventListener('submit', handleChatSubmit);
-    apiKeyForm.addEventListener('submit', handleApiKeySubmit);
-    changeApiKeyBtn.addEventListener('click', showApiKeyModal);
+    changeApiKeyBtn.addEventListener('click', handleChangeApiKey);
     downloadBtn.addEventListener('click', downloadRoadmap);
     startOverBtn.addEventListener('click', resetConversation);
 
@@ -91,18 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleApiKeySubmit(e) {
-        e.preventDefault();
-        const key = apiKeyInput.value.trim();
-        
-        if (!key) return;
-        
-        // Save API key to localStorage
-        localStorage.setItem('supawork_hf_api_key', key);
-        apiKey = key;
-        
-        // Hide modal
-        apiKeyModal.style.display = 'none';
+    function handleChangeApiKey() {
+        alert("The API key is now securely stored on the server. You don't need to provide your own key.");
     }
 
     function addMessage(text, sender) {
@@ -125,85 +108,58 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoading(true);
         
         try {
-            const response = await callOpenAI(goal, progress);
-            createRoadmapDisplay(response);
+            const response = await fetch(LAMBDA_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ goal, progress })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || 'Error generating roadmap');
+            }
+            
+            createRoadmapDisplay(data.generatedText);
             showLoading(false);
             
             // Show roadmap container
             roadmapContainer.classList.remove('hidden');
             
+            // Scroll to the roadmap after it's displayed
+            setTimeout(() => {
+                roadmapContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+            
         } catch (error) {
             showLoading(false);
-            addMessage("I'm sorry, there was an error generating your roadmap. Please check your API key and try again.", 'system');
+            addMessage("I'm sorry, there was an error generating your roadmap. Please try again later.", 'system');
             console.error('Error generating roadmap:', error);
         }
     }
 
-    async function callOpenAI(goal, progress) {
-        // Using Hugging Face Inference API with Gemma-7b-it model
-        const apiUrl = 'https://api-inference.huggingface.co/models/google/gemma-7b-it';
-        
-        const prompt = `<start_of_turn>user
-I need a detailed roadmap to help me achieve a specific goal. 
-        
-My goal: ${goal}
-        
-What I've achieved so far: ${progress}
-        
-Create a comprehensive, practical plan with specific milestones and timeframes (e.g., by 1 week, by 2 weeks, by 1 month, by 3 months, by 6 months, etc.), showing realistic progress over time.
-        
-For each timeframe milestone:
-1. Include 3-5 specific, actionable steps or tasks
-2. Note expected outcomes or results
-3. Include potential challenges and how to overcome them
-        
-Format the response as a clean timeline with clear markers for each time period. Be specific and practical, not generic.
-        
-Also include at the beginning:
-1. A realistic estimate of how long it will take to fully achieve this goal
-2. Key resources needed
-3. Critical success factors
-        
-Ensure the advice is personalized based on the starting point and aligned with the ultimate goal.
-<end_of_turn>
-
-<start_of_turn>model`;
-
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                inputs: prompt,
-                parameters: {
-                    max_new_tokens: 2048,
-                    temperature: 0.7,
-                    top_p: 0.95,
-                    return_full_text: false
-                }
-            })
-        };
-        
-        const response = await fetch(apiUrl, requestOptions);
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Error calling Hugging Face API');
-        }
-        
-        return data[0].generated_text;
-    }
-
     function createRoadmapDisplay(content) {
-        // Convert markdown to formatted HTML
-        const formattedContent = formatMarkdown(content);
-        
-        // Create a styled timeline
-        const timelineHTML = createTimeline(formattedContent);
-        
-        roadmapContent.innerHTML = timelineHTML;
+        try {
+            // Convert markdown to formatted HTML
+            const formattedContent = formatMarkdown(content);
+            
+            // Create a styled timeline
+            const timelineHTML = createTimeline(formattedContent);
+            
+            roadmapContent.innerHTML = timelineHTML;
+        } catch (error) {
+            console.error('Error formatting roadmap:', error);
+            roadmapContent.innerHTML = `
+                <div class="roadmap-error">
+                    There was an error formatting your roadmap.
+                </div>
+                <div class="roadmap-content-full">
+                    ${content}
+                </div>
+            `;
+        }
     }
 
     function formatMarkdown(text) {
@@ -268,6 +224,18 @@ Ensure the advice is personalized based on the starting point and aligned with t
             `;
         }
         
+        // If no timeline structure is detected, show full content
+        if (!timePeriods.length) {
+            return `
+                <div class="roadmap-overview">
+                    <p>Here's your personalized roadmap:</p>
+                </div>
+                <div class="roadmap-content-full">
+                    ${content}
+                </div>
+            `;
+        }
+        
         // Start the timeline
         timelineHTML += '<div class="timeline">';
         
@@ -318,11 +286,7 @@ Ensure the advice is personalized based on the starting point and aligned with t
         // Hide roadmap
         roadmapContainer.classList.add('hidden');
     }
-
-    function showApiKeyModal() {
-        apiKeyModal.style.display = 'flex';
-    }
-
+    
     function showLoading(show) {
         if (show) {
             loadingOverlay.classList.remove('hidden');

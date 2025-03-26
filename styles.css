@@ -212,6 +212,21 @@ main {
     margin-bottom: 2rem;
 }
 
+.roadmap-error {
+    color: var(--error);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: rgba(255, 112, 112, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.roadmap-content-full {
+    background-color: var(--bg-tertiary);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+}
+
 .roadmap-actions {
     display: flex;
     justify-content: center;
